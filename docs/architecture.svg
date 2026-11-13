@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 330" width="960" height="330" role="img" aria-labelledby="t d">
+  <title id="t">ESXi workflow mirrored on KVM</title>
+  <desc id="d">The same four VM lifecycle steps on two hypervisors. ESXi: New VM wizard in the Host Client, VM Network port group on vSwitch0, disk on a VMFS datastore, power on and check in the Host Client. KVM in this repo: provision-vm.sh sets lab-vm-01 with 1 vCPU and 1024 MB and calls virt-install, the VM joins the virbr0 Linux bridge, virt-install creates a 10 GB disk image in libvirt's default storage pool, and the VM starts with no graphics and a serial console, checked with virsh list --all.</desc>
+  <style>
+    :root { --ink:#1f2937; --sub:#57606a; --line:#d0d7de; --card:#ffffff; --on:#0e7490; --tint:#ecfeff; }
+    @media (prefers-color-scheme: dark) {
+      :root { --ink:#e6edf3; --sub:#9198a1; --line:#3d444d; --card:#161b22; --on:#22d3ee; --tint:#0b2a30; }
+    }
+    text { font-family: Inter, "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif; }
+    .lane  { font-size:12px; font-weight:700; fill:var(--sub); letter-spacing:.06em; }
+    .step  { font-size:11px; font-weight:700; fill:var(--on); text-anchor:middle; letter-spacing:.04em; }
+    .title { font-size:13.5px; font-weight:700; fill:var(--ink); text-anchor:middle; }
+    .sub   { font-size:10.5px; fill:var(--sub); text-anchor:middle; }
+    .code  { font-size:10.5px; fill:var(--sub); text-anchor:middle; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .node  { fill:var(--card); stroke:var(--line); stroke-width:1.5; }
+    .hot   { fill:var(--tint); stroke:var(--on); stroke-width:1.5; }
+    .wire  { stroke:var(--line); stroke-width:1.5; fill:none; }
+    .same  { stroke:var(--line); stroke-width:1.2; fill:none; stroke-dasharray:3 4; }
+    .head  { fill:var(--line); }
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="head" d="M0 0 L10 5 L0 10z"/></marker>
+  </defs>
+
+  <!-- step headers -->
+  <text class="step" x="257.5" y="28">1 · CREATE</text>
+  <text class="step" x="452.5" y="28">2 · NETWORK</text>
+  <text class="step" x="647.5" y="28">3 · STORAGE</text>
+  <text class="step" x="842.5" y="28">4 · BOOT + VERIFY</text>
+
+  <!-- ESXi lane -->
+  <text class="lane" x="20" y="80">ESXi</text>
+  <text class="sub" x="20" y="98" style="text-anchor:start">(reference)</text>
+  <g>
+    <rect class="node" x="170" y="44" width="175" height="76" rx="10"/>
+    <text class="title" x="257.5" y="74">New VM wizard</text><text class="sub" x="257.5" y="92">Host Client / vSphere</text><text class="sub" x="257.5" y="107">or PowerCLI</text>
+    <rect class="node" x="365" y="44" width="175" height="76" rx="10"/>
+    <text class="title" x="452.5" y="74">vSwitch0</text><text class="sub" x="452.5" y="92">"VM Network"</text><text class="sub" x="452.5" y="107">port group</text>
+    <rect class="node" x="560" y="44" width="175" height="76" rx="10"/>
+    <text class="title" x="647.5" y="74">VMFS datastore</text><text class="sub" x="647.5" y="92">.vmdk disk</text>
+    <rect class="node" x="755" y="44" width="175" height="76" rx="10"/>
+    <text class="title" x="842.5" y="74">Power on</text><text class="sub" x="842.5" y="92">check in Host Client</text><text class="sub" x="842.5" y="107">or esxcli</text>
+    <path class="wire" d="M345 82 H363" marker-end="url(#a)"/>
+    <path class="wire" d="M540 82 H558" marker-end="url(#a)"/>
+    <path class="wire" d="M735 82 H753" marker-end="url(#a)"/>
+  </g>
+
+  <!-- "same concept" links -->
+  <path class="same" d="M257.5 120 V176"/>
+  <path class="same" d="M452.5 120 V176"/>
+  <path class="same" d="M647.5 120 V176"/>
+  <path class="same" d="M842.5 120 V176"/>
+  <text class="sub" x="550" y="152" style="text-anchor:middle">same step, different tool</text>
+
+  <!-- KVM lane -->
+  <text class="lane" x="20" y="214">KVM</text>
+  <text class="sub" x="20" y="232" style="text-anchor:start">(this repo)</text>
+  <g>
+    <rect class="hot" x="170" y="176" width="175" height="80" rx="10"/>
+    <text class="title" x="257.5" y="203">provision-vm.sh</text><text class="code" x="257.5" y="222">virt-install</text><text class="sub" x="257.5" y="239">lab-vm-01 · 1 vCPU · 1024 MB</text>
+    <rect class="node" x="365" y="176" width="175" height="80" rx="10"/>
+    <text class="title" x="452.5" y="203">Linux bridge</text><text class="code" x="452.5" y="222">--network bridge=virbr0</text><text class="sub" x="452.5" y="239">libvirt's default bridge</text>
+    <rect class="node" x="560" y="176" width="175" height="80" rx="10"/>
+    <text class="title" x="647.5" y="203">Disk image</text><text class="code" x="647.5" y="222">--disk size=10</text><text class="sub" x="647.5" y="239">10 GB, default pool</text>
+    <rect class="node" x="755" y="176" width="175" height="80" rx="10"/>
+    <text class="title" x="842.5" y="203">Headless boot</text><text class="code" x="842.5" y="222">--graphics none</text><text class="code" x="842.5" y="239">virsh list --all</text>
+    <path class="wire" d="M345 216 H363" marker-end="url(#a)"/>
+    <path class="wire" d="M540 216 H558" marker-end="url(#a)"/>
+    <path class="wire" d="M735 216 H753" marker-end="url(#a)"/>
+  </g>
+
+  <text class="sub" x="550" y="296" style="text-anchor:middle">Settings sit as variables at the top of provision-vm.sh (VM_NAME, RAM, VCPUS, DISK_SIZE, BRIDGE, OS_VARIANT=ubuntu22.04).</text>
+  <text class="sub" x="550" y="314" style="text-anchor:middle">Feature-by-feature comparison: esxi-vs-kvm.md</text>
+</svg>
